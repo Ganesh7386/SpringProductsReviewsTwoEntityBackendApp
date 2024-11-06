@@ -9,7 +9,6 @@ import java.util.List;
 
 import com.example.nxttrendz1.repository.ReviewJpaRepository;
 import com.example.nxttrendz1.repository.ReviewRepository;
-import com.example.nxttrendz1.service.ProductJpaService;
 import com.example.nxttrendz1.model.Review;
 import com.example.nxttrendz1.model.Product;
 
@@ -45,29 +44,54 @@ public class ReviewJpaService implements ReviewRepository {
     @Override
     public Review getReviewBasedOnGivenIdReviewId(int reviewId) {
         Review existingReview = myReviewJpaRepository.findById(reviewId).get();
-        if(existingReview == null) {
+        if (existingReview == null) {
             return null;
         }
         return existingReview;
 
     }
 
-    // @Override
-    // public Review updateReviewBasedOnGivenReviewId(int reviewId , Review reviewData) {
-    //     Review existingReview = myReviewJpaRepository.findById(reviewId).get();
-    //     if(existingReview == null) {
-    //         return null;
-    //     }
-    //     if(reviewData.getReviewContent() != null) {
-    //         existingReview.setReviewContent(reviewData.getReviewContent());
-    //     }
-    //     if(reviewData.getRating() != null) {
-    //         existingReview.setRating(reviewData.getRating());
-    //     }
-    //     if(reviewData.getProduct() != null) {
-    //         Product gotProduct = reviewData.getProduct();
-    //         int gotProductId = gotProduct.getProductId();
-    //         if()
-    //     }
-    // }
+    @Override
+    public Review updateReviewBasedOnGivenReviewId(int reviewId, Review reviewData) {
+        Review existingReview = myReviewJpaRepository.findById(reviewId).get();
+        if (existingReview == null) {
+            return null;
+        }
+        if (reviewData.getReviewContent() != null) {
+            existingReview.setReviewContent(reviewData.getReviewContent());
+        }
+        Integer gotRating = reviewData.getRating();
+        if (gotRating != null) {
+            existingReview.setRating(reviewData.getRating());
+        }
+        if (reviewData.getProduct() != null) {
+            Product gotProduct = reviewData.getProduct();
+            int gotProductId = gotProduct.getProductId();
+            Product existingProduct = myProductJpaService.getProductByGivenId(gotProductId);
+            existingReview.setProduct(existingProduct);
+        }
+        Review updatedReview = myReviewJpaRepository.save(existingReview);
+        return updatedReview;
+
+    }
+
+    @Override
+    public Review deleteReviewBasedOnGivenReviewId(int reviewId) {
+        Review existingReview = myReviewJpaRepository.findById(reviewId).get();
+        if (existingReview == null) {
+            return null;
+        }
+        myReviewJpaRepository.deleteById(reviewId);
+        return existingReview;
+    }
+
+    @Override
+    public Product getProductBasedOnGivenReviewId(int reviewId) {
+        Review existingReview = myReviewJpaRepository.findById(reviewId).get();
+        if (existingReview == null) {
+            return null;
+        }
+        Product productFromReview = existingReview.getProduct();
+        return productFromReview;
+    }
 }

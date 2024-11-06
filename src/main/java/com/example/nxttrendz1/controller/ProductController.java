@@ -59,6 +59,7 @@ public class ProductController {
         if (deletedProduct == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product Not Found");
         }
+        throw new ResponseStatusException(HttpStatus.NO_CONTENT);
     }
 
 }
