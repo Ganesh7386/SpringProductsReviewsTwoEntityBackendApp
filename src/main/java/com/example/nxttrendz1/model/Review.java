@@ -17,16 +17,16 @@ public class Review {
 
     @ManyToOne
     @JoinColumn(name = "PRODUCTID", nullable = false)
-    private Product productId;
+    private Product product;
 
     public Review() {
     }
 
-    public Review(int reviewId, String reviewContent, int rating, Product productId) {
+    public Review(int reviewId, String reviewContent, int rating, Product product) {
         this.reviewId = reviewId;
         this.reviewContent = reviewContent;
         this.rating = rating;
-        this.productId = productId;
+        this.product = product;
     }
 
     public int getReviewId() {
@@ -53,12 +53,12 @@ public class Review {
         this.rating = rating;
     }
 
-    public Product getProductId() {
-        return this.productId;
+    public Product getProduct() {
+        return this.product;
     }
 
-    public void setProduct(Product productId) {
-        this.productId = productId;
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
 }

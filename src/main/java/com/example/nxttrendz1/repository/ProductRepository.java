@@ -14,4 +14,5 @@ public interface ProductRepository {
     public Product modifyProductDetailsByGivenId(int productId, Product productDetails);
 
     public Product deleteProductBasedOnGivenId(int productId);
+    
 }
