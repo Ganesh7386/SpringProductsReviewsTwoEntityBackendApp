@@ -34,4 +34,41 @@ public class ProductJpaService implements ProductRepository {
         return retrievedProduct;
     }
 
+    @Override
+    public Product addProductByGivenNewProductDetails(Product newProductData) {
+        Product newAddedProduct = myProductJpaRepository.save(newProductData);
+        // Product newAddedProduct =
+        // myProductJpaRepository.findById(addedProduct.getProductId()).get();
+        return newAddedProduct;
+    }
+
+    @Override
+    public Product modifyProductDetailsByGivenId(int prooductId, Product productDetails) {
+        Product existingProduct = myProductJpaRepository.findById(prooductId).get();
+        if (existingProduct == null) {
+            return null;
+        }
+        if (productDetails.getProductName() != null) {
+            existingProduct.setProductName(productDetails.getProductName());
+        }
+        Double gotPrice = productDetails.getPrice();
+        if (gotPrice != null) {
+            existingProduct.setPrice(productDetails.getPrice());
+        }
+        Product modifiedProduct = myProductJpaRepository.save(existingProduct);
+
+        return modifiedProduct;
+
+    }
+
+    @Override
+    public Product deleteProductBasedOnGivenId(int productId) {
+        Product existingProduct = myProductJpaRepository.findById(productId).get();
+        if (existingProduct == null) {
+            return null;
+        }
+        myProductJpaRepository.deleteById(productId);
+        return existingProduct;
+    }
+
 }

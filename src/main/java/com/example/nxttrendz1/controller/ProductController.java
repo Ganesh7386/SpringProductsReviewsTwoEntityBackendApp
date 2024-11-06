@@ -28,7 +28,7 @@ public class ProductController {
         return listOfProductsFromDb;
     }
 
-    @GetMapping("Products/{productId}")
+    @GetMapping("products/{productId}")
     public Product getProductBasedOnGivenIdFromDb(@PathVariable int productId) {
         Product existingProduct = myProductJpaService.getProductByGivenId(productId);
         if (existingProduct == null) {
@@ -36,4 +36,29 @@ public class ProductController {
         }
         return existingProduct;
     }
+
+    @PostMapping("/products")
+    public Product addNewGivenproduct(@RequestBody Product newProductData) {
+        Product newAddedProduct = myProductJpaService.addProductByGivenNewProductDetails(newProductData);
+        return newAddedProduct;
+    }
+
+    @PutMapping("/products/{productId}")
+    public Product modifyExistingProduct(@RequestBody Product productDetails, @PathVariable int productId) {
+        Product modifiedProduct = myProductJpaService.modifyProductDetailsByGivenId(productId, productDetails);
+        if (modifiedProduct == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+        return modifiedProduct;
+    }
+
+    @DeleteMapping("/products/{productId}")
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteProductBasedOnGivenId(@PathVariable int productId) {
+        Product deletedProduct = myProductJpaService.deleteProductBasedOnGivenId(productId);
+        if (deletedProduct == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product Not Found");
+        }
+    }
+
 }
